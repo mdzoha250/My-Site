@@ -16,7 +16,10 @@
 *,*::before,*::after{box-sizing:inherit}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;background:var(--bg);color:var(--text);font:17px/1.6 "Trebuchet MS",system-ui,sans-serif}
-body::before{content:"";position:fixed;inset:0;z-index:-1;background:linear-gradient(rgba(7,6,13,.55),rgba(7,6,13,.55)),url(Background-1.jpg) center/cover no-repeat}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background-size:cover;background-position:center;background-repeat:no-repeat;background-image:linear-gradient(rgba(7,6,13,.55),rgba(7,6,13,.55)),url(Background_3.jpg)}
+html.morning body::before{background-image:linear-gradient(rgba(7,6,13,.55),rgba(7,6,13,.55)),url(Background_1.jpg)}
+html.evening body::before{background-image:linear-gradient(rgba(7,6,13,.55),rgba(7,6,13,.55)),url(Background_2.jpg)}
+html.night body::before{background-image:linear-gradient(rgba(7,6,13,.55),rgba(7,6,13,.55)),url(Background_3.jpg)}
 .wrap{max-width:560px;margin:0 auto}
 header{text-align:center;padding:48px 20px 36px;background:rgba(14,12,24,.55);border-bottom:1px solid var(--line)}
 h1{margin:0;display:inline-block;position:relative;font-size:2rem;letter-spacing:.08em;text-indent:.08em;text-shadow:0 0 18px #a855f7,0 0 36px rgba(168,85,247,.5)}
@@ -40,13 +43,79 @@ a{color:var(--link)}
 .cap{margin:10px 0 0;text-align:center;color:var(--muted);font-size:.8rem;letter-spacing:.2em;text-indent:.2em}
 @keyframes push{from{transform:scale(1)}to{transform:scale(1.08)}}
 @media (prefers-reduced-motion:reduce){.cine img{animation:none}}
+.detroit{text-align:center}
+.detroit .box{cursor:pointer;font:inherit;font-weight:bold;display:inline-block;padding:16px 52px;border:2px solid #a855f7;border-radius:10px;color:#fff;background:rgba(168,85,247,.14);font-weight:bold;letter-spacing:.14em;text-decoration:none;box-shadow:0 0 18px rgba(168,85,247,.45)}
+.detroit .box:hover,.detroit .box:active{background:rgba(168,85,247,.3)}
 .stats{display:flex;gap:12px;text-align:center}
 .stat{flex:1;background:rgba(14,12,24,.55);border:1px solid var(--line);border-radius:10px;padding:18px 8px}
 .num{display:block;font-size:1.9rem;font-weight:bold;line-height:1.2;text-shadow:0 0 14px #a855f7}
 .lbl{display:block;color:var(--muted);font-size:.85rem;margin-top:4px}
-footer{display:flex;justify-content:space-around;padding:28px 20px 12px;color:var(--muted)}
+footer{display:flex;justify-content:center;padding:28px 20px 12px;color:var(--muted);text-align:center}
+.msg{display:none}
+html.morning .m-morning,html.evening .m-evening{display:block}
+html.night .m-night,html:not(.morning):not(.evening) .m-night{display:flex;justify-content:center;flex-wrap:wrap;gap:8px 28px}
 .note{text-align:center;color:var(--muted);padding:12px 20px 40px;letter-spacing:.1em;text-indent:.1em;font-size:.9rem}
+
+#detroitOverlay{display:none;position:fixed;inset:0;z-index:1000;background:#000;color:#f0f0f0;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;align-items:center;justify-content:center;font-family:'Saira Stencil One','Michroma',sans-serif;font-weight:400;letter-spacing:1px;line-height:normal;padding:2vh 4vw}
+#detroitOverlay.open{display:flex}
+:where(#detroitOverlay *){margin:0;padding:0;box-sizing:border-box}
+#detClose{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:14px;width:38px;height:38px;border:1px solid rgba(255,255,255,.25);border-radius:50%;background:#000;color:rgba(255,255,255,.6);font:18px/1 sans-serif;cursor:pointer;z-index:1001}
+.choice-container{width:100%;max-width:1050px;display:flex;flex-direction:column;align-items:center;justify-content:center;animation:fadeIn 1.2s ease-out;transform:translateY(-7.6px);margin:auto 0}
+.card-symbol{font-size:clamp(3rem,8vw,5.5rem);line-height:1;margin-bottom:2rem;color:#f0f0f0;text-align:center;filter:drop-shadow(0 0 14px rgba(255,255,255,.35))}
+.quote{text-align:center;font-size:clamp(1.6rem,4.6vw,2.45rem);line-height:2.1;color:#f0f0f0;letter-spacing:2px;margin-bottom:4.2rem;min-height:8.5em;display:flex;align-items:center;justify-content:center;padding:1.6rem 1.2rem;text-transform:uppercase;width:100%}
+.role-label{font-size:clamp(1rem,2vw,1.35rem);letter-spacing:6px;color:rgba(255,255,255,.9);text-transform:uppercase;margin-bottom:1.2rem;text-align:center}
+.choose-label{font-size:clamp(.9rem,1.8vw,1.15rem);letter-spacing:8px;color:rgba(255,255,255,.55);text-transform:uppercase;margin-bottom:1.8rem;text-align:center}
+.choices{display:flex;flex-wrap:wrap;gap:2.8rem;justify-content:center;width:100%}
+.choice-btn{background:#000;border:1px solid rgba(255,255,255,.3);color:#f0f0f0;font-family:'Saira Stencil One','Michroma',sans-serif;font-weight:400;font-size:clamp(1.1rem,2.6vw,1.65rem);padding:1.35rem 3.4rem;letter-spacing:3.5px;text-transform:uppercase;cursor:pointer;transition:all .25s ease;min-width:270px}
+.choice-btn:hover{border-color:#fff;color:#fff}
+.choice-btn:active{opacity:.7}
+.survey-note{margin-top:3.2rem;font-size:clamp(.6rem,1vw,.75rem);letter-spacing:4px;color:rgba(255,255,255,.25);text-transform:uppercase;text-align:center}
+.locked .card-symbol,.locked .role-label,.locked .choose-label,.locked .choices,.locked .survey-note{display:none}
+.locked .quote{margin-bottom:0;min-height:auto;animation:outputReveal .8s ease-out}
+.attribution{display:none;margin-top:3.5rem;font-family:'Crimson Text',Georgia,'Times New Roman',serif;font-size:clamp(1rem,1.5vw,1.15rem);font-weight:400;font-style:normal;letter-spacing:.3px;line-height:1.7;color:rgba(255,255,255,.45);text-align:center}
+.locked .attribution{display:block;animation:fadeIn 1s ease-out .4s both}
+@keyframes fadeIn{0%{opacity:0}100%{opacity:1}}
+@keyframes outputReveal{0%{opacity:0;transform:scale(.97)}100%{opacity:1;transform:scale(1)}}
+@media (max-width:700px){
+.card-symbol{margin-bottom:1.4rem}
+.quote{line-height:1.9;min-height:7.5em;margin-bottom:3rem;padding:1.2rem .8rem}
+.role-label{letter-spacing:4px;margin-bottom:.9rem}
+.choose-label{letter-spacing:5px;margin-bottom:1.4rem}
+.choices{gap:1.8rem}
+.choice-btn{min-width:0;padding:1.1rem 2.2rem;letter-spacing:2.5px}
+.survey-note{margin-top:2.2rem;letter-spacing:3px}
+.attribution{margin-top:2.4rem}}
+@media (max-height:560px){
+.card-symbol{margin-bottom:1rem}
+.quote{line-height:1.6;min-height:5.5em;margin-bottom:2rem;padding:.8rem}
+.role-label{margin-bottom:.7rem;letter-spacing:4px}
+.choose-label{margin-bottom:1rem;letter-spacing:5px}
+.choices{gap:1.4rem}
+.choice-btn{padding:.9rem 2rem}
+.survey-note{margin-top:1.6rem}
+.attribution{margin-top:1.8rem}}
+@media (max-height:420px){
+.card-symbol{font-size:2.5rem;margin-bottom:.8rem}
+.quote{line-height:1.45;min-height:4.5em;margin-bottom:1.5rem;font-size:clamp(1rem,3.4vw,1.6rem)}
+.role-label{font-size:.9rem;margin-bottom:.6rem;letter-spacing:3px}
+.choose-label{font-size:.8rem;margin-bottom:.8rem;letter-spacing:4px}
+.choice-btn{padding:.7rem 1.6rem;font-size:clamp(.9rem,2vw,1.2rem)}
+.survey-note{margin-top:1rem;font-size:.55rem}
+.attribution{margin-top:1.4rem;font-size:.9rem}}
 </style>
+<script>
+(function(){
+  var r=document.documentElement;
+  function setBg(){
+    var h=new Date().getHours();
+    var c=h<12?'morning':(h<18?'evening':'night');
+    r.classList.remove('morning','evening','night');
+    r.classList.add(c);
+  }
+  setBg();
+  setInterval(setBg,60000);
+})();
+</script>
 </head>
 <body>
 <div class="wrap">
@@ -98,12 +167,20 @@ footer{display:flex;justify-content:space-around;padding:28px 20px 12px;color:va
   <p class="cap">MD ZOHA</p>
 </section>
 
+<section class="detroit">
+  <button class="box" id="detroitBtn" type="button">Detroit</button>
+</section>
+
 <section class="stats">
   <div class="stat"><span class="num" id="vt">…</span><span class="lbl">Total visitors</span></div>
   <div class="stat"><span class="num" id="vd">…</span><span class="lbl">Today’s visitors</span></div>
 </section>
 
-<footer><span>Good night</span><span>☆☆☆</span><span>Sweet dreams</span></footer>
+<footer>
+  <span class="msg m-morning">Good morning visitor. Wishing you an energetic day. 🤗</span>
+  <span class="msg m-evening">Good evening visitor! Hope your day went well. 🤍</span>
+  <span class="msg m-night"><span>Good night</span><span>☆☆☆</span><span>Sweet dreams</span></span>
+</footer>
 <p class="note">Life is beautiful. Isn’t it?</p>
 </div>
 <script>
@@ -132,6 +209,59 @@ footer{display:flex;justify-content:space-around;padding:28px 20px 12px;color:va
   if(!window.fetch){t.textContent='–';d.textContent='–';return;}
   get(base).then(function(v){t.textContent=v;}).catch(function(){t.textContent='–';});
   get(base+'?start='+day+'&end='+day).then(function(v){d.textContent=v;}).catch(function(){d.textContent='–';});
+})();
+</script>
+<div id="detroitOverlay" role="dialog" aria-modal="true" aria-label="Detroit">
+  <button id="detClose" type="button" aria-label="Close">✕</button>
+  <div class="choice-container" id="choiceContainer">
+    <div class="card-symbol">𖦹</div>
+    <div class="quote" id="quoteText">WE ENGINEERED AN ANDROID REVOLUTION, NOW WE CONTROL ITS ONLY LEADER.</div>
+    <div class="role-label">YOUR ROLE: THE LEADER</div>
+    <div class="choose-label">CHOOSE ONE:</div>
+    <div class="choices">
+      <button class="choice-btn" id="suicideBtn" type="button">SUICIDE</button>
+      <button class="choice-btn" id="giveUpBtn" type="button">GIVE UP</button>
+    </div>
+    <div class="survey-note"></div>
+    <div class="attribution">© Adopted from Detroit: Become Human</div>
+  </div>
+</div>
+<script>
+(function(){
+  var ov=document.getElementById('detroitOverlay');
+  var openBtn=document.getElementById('detroitBtn');
+  var closeBtn=document.getElementById('detClose');
+  var container=document.getElementById('choiceContainer');
+  var quoteEl=document.getElementById('quoteText');
+  var loaded=false, locked=false;
+
+  function loadExtras(){
+    if(loaded)return; loaded=true;
+    ['https://fonts.googleapis.com/css2?family=Saira+Stencil+One&family=Michroma&display=swap',
+     'https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600&display=swap'].forEach(function(u){
+      var l=document.createElement('link'); l.rel='stylesheet'; l.href=u; document.head.appendChild(l);
+    });
+  }
+  function openIt(){
+    loadExtras();
+    var v=document.querySelector('.vid'); if(v)v.pause();
+    ov.classList.add('open'); document.body.style.overflow='hidden';
+  }
+  function closeIt(){ ov.classList.remove('open'); document.body.style.overflow=''; }
+  openBtn.addEventListener('click',openIt);
+  closeBtn.addEventListener('click',closeIt);
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape')closeIt(); });
+
+  function handleChoice(choiceText){
+    if(locked)return;
+    locked=true;
+    quoteEl.textContent = choiceText==='suicide'
+      ? "LEADER TERMINATED, NO ONE WINS"
+      : "LEADER ABDICATES, SELF-CONTROL LOST, LEADER IS NOW SERVANT";
+    container.classList.add('locked');
+  }
+  document.getElementById('suicideBtn').addEventListener('click',function(e){e.preventDefault();handleChoice('suicide');});
+  document.getElementById('giveUpBtn').addEventListener('click',function(e){e.preventDefault();handleChoice('giveup');});
 })();
 </script>
 <script data-goatcounter="https://mdzoha250.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
