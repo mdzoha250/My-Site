@@ -15,11 +15,11 @@
 :root:not([data-theme="dark"]){}
 *,*::before,*::after{box-sizing:inherit}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
-body{margin:0;background:var(--bg);color:var(--text);font:17px/1.6 "Trebuchet MS",system-ui,sans-serif}
-body::before{content:"";position:fixed;inset:0;z-index:-1;background-size:cover;background-position:center;background-repeat:no-repeat;background-image:linear-gradient(rgba(7,6,13,.55),rgba(7,6,13,.55)),url(Background_3.jpg)}
-html.morning body::before{background-image:linear-gradient(rgba(7,6,13,.55),rgba(7,6,13,.55)),url(Background_1.jpg)}
-html.evening body::before{background-image:linear-gradient(rgba(7,6,13,.55),rgba(7,6,13,.55)),url(Background_2.jpg)}
-html.night body::before{background-image:linear-gradient(rgba(7,6,13,.55),rgba(7,6,13,.55)),url(Background_3.jpg)}
+body{margin:0;background:var(--bg);color:var(--text);font:17px/1.6 "Trebuchet MS",system-ui,sans-serif;text-shadow:0 1px 3px rgba(0,0,0,.5)}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background-size:cover;background-position:center;background-repeat:no-repeat;background-image:linear-gradient(rgba(7,6,13,.3),rgba(7,6,13,.3)),url(Background_3.jpg)}
+html.morning body::before{background-image:linear-gradient(rgba(7,6,13,.3),rgba(7,6,13,.3)),url(Background_1.jpg)}
+html.evening body::before{background-image:linear-gradient(rgba(7,6,13,.3),rgba(7,6,13,.3)),url(Background_2.jpg)}
+html.night body::before{background-image:linear-gradient(rgba(7,6,13,.3),rgba(7,6,13,.3)),url(Background_3.jpg)}
 .wrap{max-width:560px;margin:0 auto}
 header{text-align:center;padding:48px 20px 36px;background:rgba(14,12,24,.55);border-bottom:1px solid var(--line)}
 h1{margin:0;display:inline-block;position:relative;font-size:2rem;letter-spacing:.08em;text-indent:.08em;text-shadow:0 0 18px #a855f7,0 0 36px rgba(168,85,247,.5)}
@@ -46,9 +46,9 @@ a{color:var(--link)}
 .detroit{text-align:center}
 .detroit .box{cursor:pointer;font:inherit;font-weight:bold;display:inline-block;padding:16px 52px;border:2px solid #a855f7;border-radius:10px;color:#fff;background:rgba(168,85,247,.14);font-weight:bold;letter-spacing:.14em;text-decoration:none;box-shadow:0 0 18px rgba(168,85,247,.45)}
 .detroit .box:hover,.detroit .box:active{background:rgba(168,85,247,.3)}
-.detroit .box.pic{padding:0;overflow:hidden;width:170px;max-width:100%;line-height:0}
+.detroit .box.pic{display:block;margin:0 auto;padding:0;overflow:hidden;width:170px;max-width:100%;line-height:0}
 .detroit .box.pic img{display:block;width:100%;height:auto}
-.clickplay{margin:8px 0 0;font-size:.72rem;letter-spacing:.12em;color:var(--muted)}
+.clickplay{margin:5px 0 0;line-height:1.2;font-size:.72rem;letter-spacing:.12em;color:var(--muted)}
 .stats{display:flex;gap:12px;text-align:center}
 .stat{flex:1;background:rgba(14,12,24,.55);border:1px solid var(--line);border-radius:10px;padding:18px 8px}
 .num{display:block;font-size:1.9rem;font-weight:bold;line-height:1.2;text-shadow:0 0 14px #a855f7}
@@ -143,7 +143,7 @@ html.night .m-night,html:not(.morning):not(.evening) .m-night{display:flex;justi
 </section>
 
 <section>
-  <h2>About me 👤</h2>
+  <h2>👤 About me</h2>
   <ul>
     <li>Hobbies: Gaming, Riding, Exploring</li>
     <li>Favorite game: FreeFire 🔥</li>
@@ -170,7 +170,7 @@ html.night .m-night,html:not(.morning):not(.evening) .m-night{display:flex;justi
 </section>
 
 <section class="contact">
-  <h2>Drives 🗂️</h2>
+  <h2>🗂️ Drives</h2>
   <p>Google: <a href="https://drive.google.com/drive/folders/16RmeoHAfOV9FcoTSVDuy6cJAhTBudo5J" target="_blank" rel="noopener">Open my Google Drive folder</a></p>
 </section>
 
