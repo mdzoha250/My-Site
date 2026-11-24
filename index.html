@@ -46,6 +46,9 @@ a{color:var(--link)}
 .detroit{text-align:center}
 .detroit .box{cursor:pointer;font:inherit;font-weight:bold;display:inline-block;padding:16px 52px;border:2px solid #a855f7;border-radius:10px;color:#fff;background:rgba(168,85,247,.14);font-weight:bold;letter-spacing:.14em;text-decoration:none;box-shadow:0 0 18px rgba(168,85,247,.45)}
 .detroit .box:hover,.detroit .box:active{background:rgba(168,85,247,.3)}
+.detroit .box.pic{padding:0;overflow:hidden;width:170px;max-width:100%;line-height:0}
+.detroit .box.pic img{display:block;width:100%;height:auto}
+.clickplay{margin:8px 0 0;font-size:.72rem;letter-spacing:.12em;color:var(--muted)}
 .stats{display:flex;gap:12px;text-align:center}
 .stat{flex:1;background:rgba(14,12,24,.55);border:1px solid var(--line);border-radius:10px;padding:18px 8px}
 .num{display:block;font-size:1.9rem;font-weight:bold;line-height:1.2;text-shadow:0 0 14px #a855f7}
@@ -57,10 +60,18 @@ html.night .m-night,html:not(.morning):not(.evening) .m-night{display:flex;justi
 .note{text-align:center;color:var(--muted);padding:12px 20px 40px;letter-spacing:.1em;text-indent:.1em;font-size:.9rem}
 
 #detroitOverlay{display:none;position:fixed;inset:0;z-index:1000;background:#000;color:#f0f0f0;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;align-items:center;justify-content:center;font-family:'Saira Stencil One','Michroma',sans-serif;font-weight:400;letter-spacing:1px;line-height:normal;padding:2vh 4vw}
-#detroitOverlay.open{display:flex}
+#detroitOverlay.open{display:flex;animation:fadeIn 1.2s ease-out}
+.dbg{position:fixed;inset:0;z-index:0;background-size:cover;background-position:center;background-repeat:no-repeat;opacity:0;transition:opacity 1.4s ease;pointer-events:none}
+.dbg-home{background-image:linear-gradient(rgba(0,0,0,.72),rgba(0,0,0,.72)),url(Detroit_home_1.jpg);opacity:1}
+.dbg-giveup{background-image:linear-gradient(rgba(0,0,0,.72),rgba(0,0,0,.72)),url(Detroit_giveup_1.jpg)}
+.dbg-suicide{background-image:linear-gradient(rgba(0,0,0,.72),rgba(0,0,0,.72)),url(Detroit_suicide_1.jpg)}
+#detroitOverlay.giveup .dbg-home,#detroitOverlay.suicide .dbg-home{opacity:0}
+#detroitOverlay.giveup .dbg-giveup{opacity:1}
+#detroitOverlay.suicide .dbg-suicide{opacity:1}
 :where(#detroitOverlay *){margin:0;padding:0;box-sizing:border-box}
 #detClose{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:14px;width:38px;height:38px;border:1px solid rgba(255,255,255,.25);border-radius:50%;background:#000;color:rgba(255,255,255,.6);font:18px/1 sans-serif;cursor:pointer;z-index:1001}
-.choice-container{width:100%;max-width:1050px;display:flex;flex-direction:column;align-items:center;justify-content:center;animation:fadeIn 1.2s ease-out;transform:translateY(-7.6px);margin:auto 0}
+.choice-container{position:relative;z-index:1;width:100%;max-width:1050px;display:flex;flex-direction:column;align-items:center;justify-content:center;animation:fadeIn 1.2s ease-out;transform:translateY(-7.6px);margin:auto 0}
+.choice-container.leaving{opacity:0;transition:opacity .6s ease}
 .card-symbol{font-size:clamp(3rem,8vw,5.5rem);line-height:1;margin-bottom:2rem;color:#f0f0f0;text-align:center;filter:drop-shadow(0 0 14px rgba(255,255,255,.35))}
 .quote{text-align:center;font-size:clamp(1.6rem,4.6vw,2.45rem);line-height:2.1;color:#f0f0f0;letter-spacing:2px;margin-bottom:4.2rem;min-height:8.5em;display:flex;align-items:center;justify-content:center;padding:1.6rem 1.2rem;text-transform:uppercase;width:100%}
 .role-label{font-size:clamp(1rem,2vw,1.35rem);letter-spacing:6px;color:rgba(255,255,255,.9);text-transform:uppercase;margin-bottom:1.2rem;text-align:center}
@@ -169,7 +180,8 @@ html.night .m-night,html:not(.morning):not(.evening) .m-night{display:flex;justi
 </section>
 
 <section class="detroit">
-  <button class="box" id="detroitBtn" type="button">Detroit</button>
+  <button class="box pic" id="detroitBtn" type="button" aria-label="Detroit"><img alt="Detroit: Become Human" src="Detroit_logo_1.jpg"></button>
+  <p class="clickplay">click to play</p>
 </section>
 
 <section class="stats">
@@ -213,6 +225,9 @@ html.night .m-night,html:not(.morning):not(.evening) .m-night{display:flex;justi
 })();
 </script>
 <div id="detroitOverlay" role="dialog" aria-modal="true" aria-label="Detroit">
+  <div class="dbg dbg-home"></div>
+  <div class="dbg dbg-giveup"></div>
+  <div class="dbg dbg-suicide"></div>
   <button id="detClose" type="button" aria-label="Close">✕</button>
   <div class="choice-container" id="choiceContainer">
     <div class="card-symbol">𖦹</div>
@@ -256,10 +271,15 @@ html.night .m-night,html:not(.morning):not(.evening) .m-night{display:flex;justi
   function handleChoice(choiceText){
     if(locked)return;
     locked=true;
-    quoteEl.textContent = choiceText==='suicide'
-      ? "LEADER TERMINATED, NO ONE WINS"
-      : "LEADER ABDICATES, SELF-CONTROL LOST, LEADER IS NOW SERVANT";
-    container.classList.add('locked');
+    ov.classList.add(choiceText==='suicide'?'suicide':'giveup');
+    container.classList.add('leaving');
+    setTimeout(function(){
+      quoteEl.textContent = choiceText==='suicide'
+        ? "LEADER TERMINATED, NO ONE WINS"
+        : "LEADER ABDICATES, SELF-CONTROL LOST, LEADER IS NOW SERVANT";
+      container.classList.remove('leaving');
+      container.classList.add('locked');
+    },600);
   }
   document.getElementById('suicideBtn').addEventListener('click',function(e){e.preventDefault();handleChoice('suicide');});
   document.getElementById('giveUpBtn').addEventListener('click',function(e){e.preventDefault();handleChoice('giveup');});
